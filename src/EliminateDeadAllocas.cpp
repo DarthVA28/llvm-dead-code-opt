@@ -71,23 +71,17 @@ void DCEPass::CollectAllocaInfoTransitively(llvm::Instruction *I, AllocaInfo &in
                 continue;
             }
 
-            // Case V: Passing as argument to function 
-            if (auto *callInst = llvm::dyn_cast<llvm::CallBase>(I)) {
-                for (unsigned int i = 0; i < callInst->arg_size(); i++) {
-                    if (callInst->getArgOperand(i) == V) {
-                        info.escapes = true;
-                        break;
-                    }
-                }
-                continue;
-            }
-            
-            // Case VI: Intrinsics like memcpy 
+            // Case V: Passing as argument to functions 
+            // First check for intrinsics since we know what they do
             if (auto *intrinsicInst = llvm::dyn_cast<llvm::IntrinsicInst>(I)) {
                 auto intrinsicID = intrinsicInst->getIntrinsicID();
+                llvm::errs() << "Found intrinsic: " << intrinsicID << "\n";
                 if (intrinsicID == llvm::Intrinsic::memcpy || intrinsicID == llvm::Intrinsic::memmove) {
                     if (intrinsicInst->getArgOperand(1) == V) {
                         info.read = true;
+                        continue;
+                    } else if (intrinsicInst->getArgOperand(0) == V) {
+                        info.storeInsts.push_back(intrinsicInst);
                         continue;
                     }
                 } else if (intrinsicID == llvm::Intrinsic::memset) {
@@ -101,6 +95,18 @@ void DCEPass::CollectAllocaInfoTransitively(llvm::Instruction *I, AllocaInfo &in
                     continue;
                 }
             }
+
+            // All other functions
+            if (auto *callInst = llvm::dyn_cast<llvm::CallBase>(I)) {
+                for (unsigned int i = 0; i < callInst->arg_size(); i++) {
+                    if (callInst->getArgOperand(i) == V) {
+                        info.escapes = true;
+                        break;
+                    }
+                }
+                continue;
+            }
+            
 
             // For other instructions, assume escape 
             info.escapes = true;

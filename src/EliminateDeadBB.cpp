@@ -26,18 +26,15 @@ bool DCEPass::EliminateTriviallyDeadInstructions(llvm::Function &F) {
 bool DCEPass::EliminateRedundantBasicBlocks(llvm::Function &F) {
     bool Changed = false;
 
-    // Early-increment iteration is important: the call may delete the block.
     for (auto It = F.begin(), E = F.end(); It != E; ) {
         llvm::BasicBlock *BB = &*It++;
-        if (BB == &F.getEntryBlock()) continue; // never nuke entry
+        if (BB == &F.getEntryBlock()) continue; 
         if (BB->hasAddressTaken()) continue;
 
-        // Must end with unconditional branch
         auto *Br = llvm::dyn_cast<llvm::BranchInst>(BB->getTerminator());
         if (!Br || !Br->isUnconditional())
             continue;
 
-        // All instructions before terminator must be PHIs or debug intrinsics
         bool Safe = true;
         for (auto &I : *BB) {
             if (&I == Br) break;
@@ -49,7 +46,6 @@ bool DCEPass::EliminateRedundantBasicBlocks(llvm::Function &F) {
         }
         if (!Safe) continue;
 
-        // Now it's a valid candidate
         if (llvm::TryToSimplifyUncondBranchFromEmptyBlock(BB)) {
             Changed = true;
         }
