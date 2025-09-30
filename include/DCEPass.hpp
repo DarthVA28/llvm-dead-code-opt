@@ -21,7 +21,6 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Utils/Local.h"   
 
-
 namespace DCEPass_LLVM
 {
 class DCEPass : public llvm::PassInfoMixin<DCEPass> {
