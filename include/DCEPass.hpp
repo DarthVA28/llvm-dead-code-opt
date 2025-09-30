@@ -34,14 +34,13 @@ private:
         llvm::SmallVector<llvm::Instruction*, 32> storeInsts;
         llvm::SmallVector<llvm::Instruction*, 32> otherInsts;
     } AllocaInfo;
-    
+
     static bool EliminateTriviallyDeadInstructions(llvm::Function &F);
     static bool EliminateRedundantBasicBlocks(llvm::Function &F);
     static bool EliminateRedundantBranches(llvm::Function &F);
     static bool SimplifyControlFlow(llvm::Function &F);
     static void CollectAllocaInfoTransitively(llvm::Instruction *I, AllocaInfo &info);
     static bool EliminateDeadAllocas(llvm::Function &F);
-
 
 public:
     llvm::PreservedAnalyses run(llvm::Function &F, llvm::FunctionAnalysisManager &); 
