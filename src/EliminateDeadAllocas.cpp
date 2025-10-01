@@ -4,13 +4,13 @@ namespace DCEPass_LLVM
 {
 
 /// @brief Helper function to collect information about an alloca instruction transitively
-/// @param I 
-/// @param info 
-void DCEPass::CollectAllocaInfoTransitively(llvm::Instruction *I, AllocaInfo &info) {
+/// @param instr Root instruction to analyze
+/// @param info Alloca information to populate
+void DCEPass::CollectAllocaInfoTransitively(llvm::Instruction *instr, AllocaInfo &info) {
     llvm::SmallVector<llvm::Value*, 32> workList;
     llvm::SmallPtrSet<llvm::Value*, 32> visited;
 
-    workList.push_back(I);
+    workList.push_back(instr);
 
     while (!workList.empty()) {
         auto *V = workList.pop_back_val();
