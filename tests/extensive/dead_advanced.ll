@@ -28,7 +28,7 @@ entry:
   store ptr %y, ptr %slot, align 8
 
   ; note from v: this version won't be optimized 
-  ; since %p is not an alloca the pass won't try to optimize it
+  ; since we need to perform memory analysis to know that p points to y
   %p  = load ptr, ptr %slot, align 8  
   %vx = load i32, ptr %x, align 4     
   store i32 %vx, ptr %p, align 4      
