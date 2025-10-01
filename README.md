@@ -18,5 +18,5 @@ To build and run this pass, ensure that `llvm-18` and `llvm-18-dev` are installe
 
 3. Then run the following command to run the tests:
    ```bash
-    opt -load-pass-plugin ./build/libDCEPass.so -passes="dce-pass" -S tests/<path-to-test>.ll -o <path-to-output>.ll
-    ```
+   opt-18 -load-pass-plugin ./build/libDCEPass.so -passes="dce-pass" -S tests/<path-to-test>.ll -o <path-to-output>.ll
+   ```
