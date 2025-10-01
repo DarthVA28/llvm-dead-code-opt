@@ -82,13 +82,9 @@ bool DCEPass::EliminateRedundantBranches(llvm::Function &F) {
 /// @return `true` if any change is made to the function
 bool DCEPass::SimplifyControlFlow(llvm::Function &F) {
     bool changed = false;
-    llvm::errs() << "Simplifying control flow...\n";
     changed |= EliminateRedundantBranches(F);
-    llvm::errs() << "After eliminating redundant branches:\n";
     changed |= EliminateRedundantBasicBlocks(F);
-    llvm::errs() << "After eliminating redundant basic blocks:\n";
     changed |= llvm::removeUnreachableBlocks(F);
-    llvm::errs() << "After removing unreachable blocks:\n";
     return changed;
 }
 

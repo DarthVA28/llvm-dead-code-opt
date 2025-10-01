@@ -1,5 +1,4 @@
 #pragma once 
-
 #include "llvm/ADT/SmallPtrSet.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Constants.h"
@@ -25,7 +24,6 @@ namespace DCEPass_LLVM
 {
 class DCEPass : public llvm::PassInfoMixin<DCEPass> {
 private: 
-
     typedef struct
     {
         bool escapes; 

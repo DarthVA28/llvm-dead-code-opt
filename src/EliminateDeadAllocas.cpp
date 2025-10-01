@@ -75,7 +75,6 @@ void DCEPass::CollectAllocaInfoTransitively(llvm::Instruction *instr, AllocaInfo
             // First check for intrinsics since we know what they do
             if (auto *intrinsicInst = llvm::dyn_cast<llvm::IntrinsicInst>(I)) {
                 auto intrinsicID = intrinsicInst->getIntrinsicID();
-                llvm::errs() << "Found intrinsic: " << intrinsicID << "\n";
                 if (intrinsicID == llvm::Intrinsic::memcpy || intrinsicID == llvm::Intrinsic::memmove) {
                     if (intrinsicInst->getArgOperand(1) == V) {
                         info.read = true;

@@ -9,13 +9,9 @@ llvm::PreservedAnalyses DCEPass::run(llvm::Function &F, llvm::FunctionAnalysisMa
     while (true) {
         bool changed = false;
         // Print stuff for debugging 
-        llvm::errs() << "Before DCE iteration:\n";
         changed |= EliminateTriviallyDeadInstructions(F);
-        llvm::errs() << "After eliminating trivially dead instructions:\n";
         changed |= SimplifyControlFlow(F);
-        llvm::errs() << "After simplifying control flow:\n";
         changed |= EliminateDeadAllocas(F);
-        llvm::errs() << "After eliminating dead allocas:\n";
         if (!changed) break;
         preserved = false;
     }
