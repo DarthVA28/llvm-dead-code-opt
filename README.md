@@ -9,7 +9,7 @@ Specifically, this pass targets the following kinds of optimizations:
 3. Removes dead stack `allocas`. We call an alloca dead if it is never read from and does not escape a function body.
 
 ## Instructions for Testing
-To build and run this pass, ensure that `llvm-18` and `llvm-18-dev` are installed on your system. `cmake >= 3.15` is also required. Then:
+To build and run this pass, ensure that `llvm-18` and `llvm-18-dev` are installed on your system. `cmake >= 3.15` and `ninja` are also required. Then:
 
 1. In the top level folder, run:
    ```
